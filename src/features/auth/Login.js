@@ -9,9 +9,11 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { useUserLoginMutation } from "./authApi";
+import { useDispatch } from "react-redux";
+import { setUser } from "./userSlice";
 
 const Login = () => {
-
+  const dispatch = useDispatch();
   const nav = useNavigate();
   const [userLogin, { isLoading }] = useUserLoginMutation();
   const userSchema = Yup.object({
@@ -30,8 +32,10 @@ const Login = () => {
 
       try {
         const response = await userLogin(val).unwrap();
+        dispatch(setUser(response.data));
         toast.dismiss();
         toast.success(response.status);
+        nav(-1);
       } catch (err) {
         toast.dismiss();
         toast.error(err.data.message);
@@ -85,7 +89,7 @@ const Login = () => {
           {formik.errors.password && formik.touched.password && <h1 className="text-pink-600">{formik.errors.password}</h1>}
         </div>
 
-        <Button type="submit" loading={isLoading} className="mt-6" fullWidth>
+        <Button type="submit" loading={isLoading} disabled={isLoading} className="mt-6" fullWidth>
           Login
         </Button>
         <Typography color="gray" className="mt-4 text-center font-normal ">

@@ -14,6 +14,7 @@ import PlaceOrder from "./features/user/PlaceOrder";
 import UserProfile from "./features/user/UserProfile";
 import OrderDetail from "./features/order/OrderDetail";
 import AdminProfile from "./features/admin/AdminProfile";
+import PublicRoutes from "./ui/PublicRoutes";
 
 
 
@@ -26,11 +27,16 @@ const App = () => {
       path: '/',
       element: <RootLayOut />,
       children: [
-        { index: true, element: <Login /> },
+        { index: true, element: <HomePage /> },
 
+        {
+          element: <PublicRoutes />,
+          children: [
+            { path: 'login', element: <Login /> },
+            { path: 'signUp', element: <SignUp /> },
+          ]
+        },
 
-        { path: 'login', element: <Login /> },
-        { path: 'signUp', element: <SignUp /> },
 
 
         { path: 'carts', element: <CartPage /> },

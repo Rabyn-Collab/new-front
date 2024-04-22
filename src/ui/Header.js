@@ -17,7 +17,8 @@ import {
 
 } from "@heroicons/react/24/solid";
 import { NavLink, useNavigate } from "react-router-dom";
-import { adminUser } from "../dummy/users";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../features/auth/userSlice";
 
 // admin menu component
 const adminMenuItems = [
@@ -56,7 +57,7 @@ const profileMenuItems = [
 
 function ProfileMenu({ user }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
+  const dispatch = useDispatch();
   const closeMenu = () => setIsMenuOpen(false);
   const menus = user.isAdmin ? adminMenuItems : profileMenuItems;
   const nav = useNavigate();
@@ -92,7 +93,7 @@ function ProfileMenu({ user }) {
                 closeMenu();
                 switch (val) {
                   case 'out':
-
+                    dispatch(clearUser());
                     break;
                   case 'products':
                     nav('/admin/products');
@@ -137,6 +138,7 @@ function ProfileMenu({ user }) {
 
 
 const Header = () => {
+
   //const [isNavOpen, setIsNavOpen] = React.useState(false);
 
   //const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
@@ -147,6 +149,9 @@ const Header = () => {
   //     () => window.innerWidth >= 960 && setIsNavOpen(false),
   //   );
   // }, []);
+  const { user } = useSelector((state) => state.userSlice);
+
+
 
 
   return (
@@ -161,19 +166,19 @@ const Header = () => {
         </Typography>
 
         <div className="flex items-center space-x-2">
-          {!adminUser && <NavLink to='/login'>
+          {!user && <NavLink to='/login'>
             <Button size="sm" variant="text">
               <span>Log In</span>
             </Button>
           </NavLink>}
 
-          {adminUser && !adminUser.isAdmin && <NavLink to='/carts'>
+          {user && !user.isAdmin && <NavLink to='/carts'>
             <Button size="sm" variant="text">
               <ShoppingBagIcon className="h-6 w-6 text-blue-500" />
             </Button>
           </NavLink>}
 
-          {adminUser && <ProfileMenu user={adminUser} />}
+          {user && <ProfileMenu user={user} />}
         </div>
 
       </div>

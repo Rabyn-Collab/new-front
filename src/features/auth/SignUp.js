@@ -7,10 +7,13 @@ import {
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
 import * as Yup from 'yup';
+import { useUserRegisterMutation } from "./authApi";
+import { toast } from "react-toastify";
 
 
 const SignUp = () => {
 
+  const [userRegister, { isLoading }] = useUserRegisterMutation();
   const nav = useNavigate();
   const userSchema = Yup.object({
     email: Yup.string().email('').required('email required'),
@@ -27,7 +30,15 @@ const SignUp = () => {
     },
 
     onSubmit: async (val, { resetForm }) => {
-
+      try {
+        const response = await userRegister(val).unwrap();
+        toast.dismiss();
+        toast.success(response.status);
+        nav(-1);
+      } catch (err) {
+        toast.dismiss();
+        toast.error(err.data.message);
+      }
     },
     validationSchema: userSchema
 
@@ -92,7 +103,7 @@ const SignUp = () => {
         </div>
 
 
-        <Button type="submit" className="mt-6" fullWidth>
+        <Button loading={isLoading} disabled={isLoading} type="submit" className="mt-6" fullWidth>
           SignUp
         </Button>
 
