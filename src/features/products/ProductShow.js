@@ -10,14 +10,22 @@ import {
 } from "@material-tailwind/react";
 import { useNavigate } from 'react-router';
 import { products } from "../../dummy/products";
+import { useGetAllProductsQuery } from "./productApi";
+import CardSkeleton from "../../ui/CardSkeleton";
 const ProductShow = () => {
+
+  const { isLoading, isError, error, data } = useGetAllProductsQuery();
   const nav = useNavigate();
+
+  if (isLoading) {
+    return <CardSkeleton />
+  }
 
   return (
     <div className="grid grid-cols-3 gap-5">
 
 
-      {products.map((product) => {
+      {data && data.products.map((product) => {
         return <Card key={product._id} className="mt-6  ">
           <CardHeader shadow={false} floated={false} className="h-52">
             <img
