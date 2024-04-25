@@ -10,10 +10,10 @@ const ProductTable = ({ product }) => {
 
 
 
-  const isExist = carts?.find((cart) => cart.product === product._id);
+  // const isExist = carts?.find((cart) => cart.product === product._id);
   const formik = useFormik({
     initialValues: {
-      qty: isExist?.qty || 1
+      qty: 1
     }
   });
 
@@ -82,10 +82,27 @@ const ProductTable = ({ product }) => {
               <td className={`p-4 bg-blue-gray-50/50 text-center`}>
 
                 <div className="z-40">
+                  {product.countInStock}
+
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td className='p-4 border-b border-blue-gray-50 text-center'>
+                <Typography variant="small" color="blue-gray" className="font-normal">
+                  Select Qty
+                </Typography>
+              </td>
+              <td className={`p-4 bg-blue-gray-50/50 text-center`}>
+
+                <div className="z-40">
                   <form>
 
                     <select value={formik.values.qty} onChange={(e) => {
-
                       formik.setFieldValue('qty', e.target.value)
                     }} className="px-2 py-1 z-30" label="Select" size="md" name="qty">
                       {[...Array(product.countInStock).keys()].map((val, i) => {

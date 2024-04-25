@@ -35,17 +35,17 @@ const CartPage = () => {
               </div>
               <div>
                 <select value={cart.qty} onChange={(e) => {
-                  dispatch(setCartToLocal(
-                    { ...cart, qty: Number(e.target.value) }
-                  ));
+                  // dispatch(setCartToLocal(
+                  //   { ...cart, qty: Number(e.target.value) }
+                  // ));
                 }} className="px-2 py-1 z-30" label="Select" size="md">
-                  {[...Array(cart.stock).keys()].map((val, i) => {
+                  {/* {[...Array(cart.stock).keys()].map((val, i) => {
                     return <option value={val + 1} key={i + 1}>{val + 1} </option>
-                  })}
+                  })} */}
                 </select>
               </div>
               <div className="">
-                <Button onClick={() => dispatch(removeSingleCart(cart))} size="sm" color="pink" className="text-[9px] py-1 ">Remove</Button>
+                {/* <Button onClick={() => dispatch(removeSingleCart(cart))} size="sm" color="pink" className="text-[9px] py-1 ">Remove</Button> */}
               </div>
 
               <div className="justify-self-end">

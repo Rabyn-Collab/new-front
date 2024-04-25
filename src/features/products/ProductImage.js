@@ -1,4 +1,3 @@
-import { products } from "../../dummy/products";
 
 
 
@@ -8,7 +7,7 @@ const ProductImage = ({ data }) => {
     <figure className="relative h-[300px] w-full">
       <img
         className="h-full w-full rounded-xl object-cover object-center"
-        src={products[0].product_image}
+        src={data.product_image}
         alt="nature image"
       />
 

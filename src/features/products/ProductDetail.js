@@ -4,29 +4,33 @@ import { Rating } from '@material-tailwind/react';
 import ProductReview from './ProductReview';
 import { products } from '../../dummy/products';
 import { regUser } from '../../dummy/users';
+import { useParams } from 'react-router';
+import { useGetProductByIdQuery } from './productApi';
 
 const ProductDetail = () => {
 
 
+  const { id } = useParams();
 
-
+  const { isLoading, error, isError, data } = useGetProductByIdQuery(id);
 
   return (
     <div>
-      <div className='grid-cols-3 grid p-10 gap-5 items-start'>
+      {data && <div className='grid-cols-3 grid p-10 gap-5 items-start'>
 
 
-        <ProductImage data={products[0]} />
-        {<div>
-          <p>{products[0].product_detail}</p>
-          <Rating className="" value={4} color="green" readonly />
-        </div>}
+        <ProductImage data={data.data} />
+        <div>
+          <p>{data.data.product_detail}</p>
+          <Rating className="" value={Math.floor(data.data.rating)} color="green" readonly />
+        </div>
 
-        {<ProductTable product={products[0]} />}
+        <ProductTable product={data.data} />
 
-        {<ProductReview user={regUser} id={products[0]._id} reviews={products[0].reviews} />}
+        {/* {<ProductReview user={regUser} id={data.data._id} reviews={products[0].reviews} />} */}
 
       </div>
+      }
     </div>
   )
 }

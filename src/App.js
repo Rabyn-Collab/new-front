@@ -22,6 +22,8 @@ import PublicRoutes from "./ui/PublicRoutes";
 const App = () => {
 
 
+
+
   const router = createBrowserRouter([
     {
       path: '/',
