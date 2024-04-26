@@ -21,8 +21,13 @@ import PublicRoutes from "./ui/PublicRoutes";
 
 const App = () => {
 
+  // const arrs = [22, 55, 77, 99];
+  // arrs.splice(3, 1);
+  // console.log(arrs);
 
-
+  // const prods = [{ id: 1, price: 100 }, { id: 2, price: 500 }, { id: 3, price: 700 }];
+  // const total = prods.reduce((a, b) => a + b.price, 0);
+  // console.log(total);
 
   const router = createBrowserRouter([
     {

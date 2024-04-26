@@ -1,6 +1,8 @@
 import { Card, Typography, Button, Option, Select } from "@material-tailwind/react";
 import { useFormik } from "formik";
-import { carts } from "../../dummy/carts";
+import { useDispatch, useSelector } from "react-redux";
+import { setToCart } from "../cart/cartSlice";
+import { useNavigate } from "react-router";
 
 
 
@@ -8,17 +10,28 @@ import { carts } from "../../dummy/carts";
 const ProductTable = ({ product }) => {
 
 
+  const dispatch = useDispatch();
+  const { carts } = useSelector((state) => state.cartSlice);
+  const { user } = useSelector((state) => state.userSlice);
 
-
-  // const isExist = carts?.find((cart) => cart.product === product._id);
+  const nav = useNavigate();
+  const isExist = carts?.find((cart) => cart.product === product._id);
   const formik = useFormik({
     initialValues: {
-      qty: 1
+      qty: isExist?.qty || 1
     }
   });
 
   const addCart = () => {
-
+    dispatch(setToCart({
+      name: product.product_name,
+      qty: formik.values.qty,
+      image: product.product_image,
+      price: product.product_price,
+      product: product._id,
+      countInStock: product.countInStock
+    }));
+    nav('/carts');
 
 
   }
@@ -103,7 +116,7 @@ const ProductTable = ({ product }) => {
                   <form>
 
                     <select value={formik.values.qty} onChange={(e) => {
-                      formik.setFieldValue('qty', e.target.value)
+                      formik.setFieldValue('qty', Number(e.target.value))
                     }} className="px-2 py-1 z-30" label="Select" size="md" name="qty">
                       {[...Array(product.countInStock).keys()].map((val, i) => {
                         return <option value={val + 1} key={i + 1}>{val + 1} </option>
@@ -119,13 +132,14 @@ const ProductTable = ({ product }) => {
             </tr>
 
           </tbody>
-          <tfoot className="text-center">
+          {!user?.isAdmin && <tfoot className="text-center">
             {<tr>
               <td colSpan={2}>
                 <Button onClick={addCart}>Add To Cart</Button>
               </td>
             </tr>}
           </tfoot>
+          }
         </table>
       </Card>
 

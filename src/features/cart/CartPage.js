@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
-import { removeSingleCart, setCartToLocal } from "./cartSlice";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router";
+import { removeCart, setToCart } from "./cartSlice";
 
 const CartPage = () => {
 
@@ -17,6 +17,9 @@ const CartPage = () => {
       qty: 1
     }
   });
+  // const sio = { id: 1, qty: 1, name: 'clothes' };
+  // const newCopy = { ...sio, qty: 2 };
+  // console.log(newCopy);
 
   return (
     <div className="p-5 space-y-4">
@@ -35,17 +38,17 @@ const CartPage = () => {
               </div>
               <div>
                 <select value={cart.qty} onChange={(e) => {
-                  // dispatch(setCartToLocal(
-                  //   { ...cart, qty: Number(e.target.value) }
-                  // ));
+                  dispatch(setToCart(
+                    { ...cart, qty: Number(e.target.value) }
+                  ));
                 }} className="px-2 py-1 z-30" label="Select" size="md">
-                  {/* {[...Array(cart.stock).keys()].map((val, i) => {
+                  {[...Array(cart.countInStock).keys()].map((val, i) => {
                     return <option value={val + 1} key={i + 1}>{val + 1} </option>
-                  })} */}
+                  })}
                 </select>
               </div>
               <div className="">
-                {/* <Button onClick={() => dispatch(removeSingleCart(cart))} size="sm" color="pink" className="text-[9px] py-1 ">Remove</Button> */}
+                <Button onClick={() => dispatch(removeCart(i))} size="sm" color="pink" className="text-[9px] py-1 ">Remove</Button>
               </div>
 
               <div className="justify-self-end">
@@ -61,11 +64,16 @@ const CartPage = () => {
           </div>
         </div>
         <Button onClick={() => {
-          if (user?.shippingAddress?.isEmpty) {
-            nav('/shippingAddress');
+          if (user) {
+            if (user?.shippingAddress?.isEmpty) {
+              nav('/shippingAddress');
+            } else {
+              nav('/placeOrder');
+            }
           } else {
-            nav('/placeOrder');
+            nav('/login');
           }
+
         }} className="mt-5" >CheckOut</Button>
       </div> : <h1>cart list is empty</h1>}
 
