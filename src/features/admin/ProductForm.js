@@ -9,9 +9,10 @@ import {
 } from "@material-tailwind/react";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useAddProductMutation } from "../products/productApi";
 
 const ProductForm = () => {
-
+  const [addProduct, { isLoading }] = useAddProductMutation();
 
   const productSchema = Yup.object({
     product_name: Yup.string().required(),
@@ -41,9 +42,23 @@ const ProductForm = () => {
       },
 
       onSubmit: async (val, { resetForm }) => {
+        const formData = new FormData();
+        formData.append('product_name', val.product_name);
+        formData.append('product_detail', val.product_detail);
+        formData.append('product_price', Number(val.product_price));
+        formData.append('countInStock', Number(val.countInStock));
+        formData.append('brand', val.brand);
+        formData.append('category', val.category);
+        formData.append('product_image', val.product_image);
+        try {
 
+          console.log(formData);
+
+        } catch (error) {
+
+        }
       },
-      // validationSchema: productSchema
+      validationSchema: productSchema
 
     });
 

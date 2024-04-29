@@ -6,6 +6,7 @@ import { removeCart, setToCart } from "./cartSlice";
 
 const CartPage = () => {
 
+
   const { carts } = useSelector((state) => state.cartSlice);
   const { user } = useSelector((state) => state.userSlice);
   const total = carts.reduce((prev, cart) => prev + cart.price * cart.qty, 0);

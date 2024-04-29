@@ -1,5 +1,6 @@
 import { Carousel } from "@material-tailwind/react";
 import { useGetTopProductsQuery } from "../products/productApi";
+import { baseUrl } from "../../constants/apis";
 
 
 const Carasouel = () => {
@@ -29,7 +30,7 @@ const Carasouel = () => {
     <div>
       {data && <Carousel autoplay={true} className="rounded-xl max-w-4xl mx-auto">
         {data.products?.map((product) => {
-          return <img className="h-[300px]" key={product._id} src={product.product_image} alt="" />
+          return <img className="h-[300px]" key={product._id} src={`${baseUrl}${product.product_image}`} alt="" />
         })}
 
       </Carousel>}

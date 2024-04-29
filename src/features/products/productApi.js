@@ -12,23 +12,37 @@ export const productApi = createApi({
       query: (query) => ({
         url: '/topProducts',
         method: 'GET'
-      })
+      }),
+      providesTags: ['Product']
     }),
 
     getAllProducts: builder.query({
       query: (query) => ({
         url: '/',
         method: 'GET'
-      })
+      }),
+      providesTags: ['Product']
     }),
 
     getProductById: builder.query({
       query: (id) => ({
         url: `/${id}`,
         method: 'GET'
-      })
+      }),
+      providesTags: ['Product']
     }),
 
+    addProduct: builder.mutation({
+      query: (query) => ({
+        url: '/',
+        body: query.body,
+        method: 'POST',
+        headers: {
+          Authorization: query.token
+        }
+      }),
+      invalidatesTags: ['Product']
+    }),
 
 
 
@@ -36,4 +50,4 @@ export const productApi = createApi({
 });
 
 
-export const { useGetAllProductsQuery, useGetTopProductsQuery, useGetProductByIdQuery } = productApi;
+export const { useGetAllProductsQuery, useGetTopProductsQuery, useGetProductByIdQuery, useAddProductMutation } = productApi;

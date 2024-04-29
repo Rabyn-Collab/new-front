@@ -1,4 +1,4 @@
-import { imageUrl } from "../../constants/apis";
+import { baseUrl, imageBase, imageUrl } from "../../constants/apis";
 
 import {
   Card,
@@ -29,7 +29,7 @@ const ProductShow = () => {
         return <Card key={product._id} className="mt-6  ">
           <CardHeader shadow={false} floated={false} className="h-52">
             <img
-              src={`${product.product_image}`}
+              src={`${baseUrl}${product.product_image}`}
               alt="card-image"
               className="h-full w-full object-cover"
             />
