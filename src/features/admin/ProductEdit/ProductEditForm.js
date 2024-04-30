@@ -11,10 +11,15 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router';
 import * as Yup from 'yup';
 import { baseUrl } from "../../../constants/apis";
+import { useUpdateProductMutation } from "../../products/productApi";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const ProductEditForm = ({ data }) => {
 
+  const [updateProduct, { isLoading }] = useUpdateProductMutation();
 
+  const { user } = useSelector((state) => state.userSlice);
   const nav = useNavigate();
 
   const productSchema = Yup.object({
@@ -45,6 +50,37 @@ const ProductEditForm = ({ data }) => {
       },
 
       onSubmit: async (val, { resetForm }) => {
+        const formData = new FormData();
+        formData.append('product_name', val.product_name);
+        formData.append('product_detail', val.product_detail);
+        formData.append('product_price', Number(val.product_price));
+        formData.append('countInStock', Number(val.countInStock));
+        formData.append('brand', val.brand);
+        formData.append('category', val.category);
+        try {
+          if (val.product_image === null) {
+            await updateProduct({
+              body: formData,
+              id: data._id,
+              token: user.token
+            }).unwrap();
+
+
+          } else {
+            formData.append('product_image', val.product_image);
+            formData.append('prevImage', data.product_image);
+            await updateProduct({
+              body: formData,
+              id: data._id,
+              token: user.token
+            }).unwrap();
+          }
+          toast.success('product updated successfully');
+          nav(-1);
+        } catch (err) {
+          toast.dismiss();
+          toast.error(err.data.message);
+        }
 
       },
       validationSchema: productSchema
