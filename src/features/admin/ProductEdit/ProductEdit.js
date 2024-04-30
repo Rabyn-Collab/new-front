@@ -1,12 +1,19 @@
 import ProductEditForm from './ProductEditForm';
-import { products } from '../../../dummy/products';
+import { useParams } from 'react-router';
+import { useGetProductByIdQuery } from '../../products/productApi';
 
 const ProductEdit = () => {
 
+  const { id } = useParams();
+  const { isLoading, data, error } = useGetProductByIdQuery(id);
+
+  if (isLoading) {
+    return <h1>Loading....</h1>;
+  }
 
   return (
     <div>
-      {<ProductEditForm data={products[0]} />}
+      {<ProductEditForm data={data.data} />}
     </div>
   )
 }

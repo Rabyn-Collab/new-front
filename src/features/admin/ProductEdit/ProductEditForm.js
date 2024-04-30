@@ -10,6 +10,7 @@ import {
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router';
 import * as Yup from 'yup';
+import { baseUrl } from "../../../constants/apis";
 
 const ProductEditForm = ({ data }) => {
 
@@ -88,9 +89,11 @@ const ProductEditForm = ({ data }) => {
           />
           {errors.countInStock && touched.countInStock && <h1 className='text-pink-700'>{errors.countInStock}</h1>}
           <Select value={values.brand} onChange={(e) => setFieldValue('brand', e)} label="Select Brand">
-            <Option value="nike"  >Nike</Option>
-            <Option value="addidas">Addidas</Option>
-            <Option value="dolce">Dolce</Option>
+            <Option value="Nike">Nike</Option>
+            <Option value="Panasonic">Panasonic</Option>
+            <Option value="Samsung">Samsung</Option>
+            <Option value="Dolce">Dolce</Option>
+            <Option value="Kfc">Kfc</Option>
           </Select>
           <Select value={values.category} onChange={(e) => setFieldValue('category', e)} label="Select Category">
             <Option value="clothes">Clothes</Option>
@@ -125,7 +128,7 @@ const ProductEditForm = ({ data }) => {
             />
             {errors.product_image && touched.product_image && <h1 className='text-pink-700'>{errors.product_image}</h1>}
 
-            {values.imageReview && <img src={values.product_image === null ? `${values.imageReview}` : values.imageReview} alt="" />}
+            {values.imageReview && <img src={values.product_image === null ? `${baseUrl}${values.imageReview}` : values.imageReview} alt="" />}
           </div>
 
 

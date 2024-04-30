@@ -10,10 +10,14 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAddProductMutation } from "../products/productApi";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const ProductForm = () => {
   const [addProduct, { isLoading }] = useAddProductMutation();
-
+  const { user } = useSelector((state) => state.userSlice);
+  const nav = useNavigate();
   const productSchema = Yup.object({
     product_name: Yup.string().required(),
     product_detail: Yup.string().required(),
@@ -52,10 +56,16 @@ const ProductForm = () => {
         formData.append('product_image', val.product_image);
         try {
 
-          console.log(formData);
+          await addProduct({
+            body: formData,
+            token: user.token
+          }).unwrap();
 
-        } catch (error) {
-
+          toast.success('product added successfully');
+          nav(-1);
+        } catch (err) {
+          toast.dismiss();
+          toast.error(err.data.message);
         }
       },
       validationSchema: productSchema
@@ -97,9 +107,11 @@ const ProductForm = () => {
           />
           {errors.countInStock && touched.countInStock && <h1 className='text-pink-700'>{errors.countInStock}</h1>}
           <Select onChange={(e) => setFieldValue('brand', e)} label="Select Brand">
-            <Option value="nike">Nike</Option>
-            <Option value="addidas">Addidas</Option>
-            <Option value="dolce">Dolce</Option>
+            <Option value="Nike">Nike</Option>
+            <Option value="Panasonic">Panasonic</Option>
+            <Option value="Samsung">Samsung</Option>
+            <Option value="Dolce">Dolce</Option>
+            <Option value="Kfc">Kfc</Option>
           </Select>
           <Select onChange={(e) => setFieldValue('category', e)} label="Select Category">
             <Option value="clothes">Clothes</Option>
@@ -138,7 +150,7 @@ const ProductForm = () => {
 
         </div>
 
-        <Button type="submit" className="mt-6" fullWidth>
+        <Button loading={isLoading} type="submit" className="mt-6" fullWidth>
           Submit
         </Button>
 

@@ -1,12 +1,18 @@
 import { useNavigate } from "react-router";
 import { Avatar, Button, Card, Typography } from "@material-tailwind/react";
 import { products } from "../../dummy/products";
+import { useGetAllProductsQuery } from "../products/productApi";
+import { baseUrl } from "../../constants/apis";
 const AdminProducts = () => {
 
-
+  const { isLoading, error, data } = useGetAllProductsQuery();
   const nav = useNavigate();
   const TABLE_HEAD = ["", "Title", "CreatedAt",
     "Edit", "Delete"];
+
+  if (isLoading) {
+    return <h1>Loading....</h1>;
+  }
 
 
 
@@ -38,14 +44,14 @@ const AdminProducts = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map(({ product_name, product_image, createdAt, _id }, index) => {
+            {data?.products.map(({ product_name, product_image, createdAt, _id }, index) => {
               const isLast = index === products.length - 1;
               const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
               return (
                 <tr key={_id}>
                   <td className={classes}>
-                    <Avatar src={`${product_image}`} alt="avatar" />
+                    <Avatar src={`${baseUrl}${product_image}`} alt="avatar" />
                   </td>
                   <td className={classes}>
                     <Typography

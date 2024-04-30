@@ -97,6 +97,7 @@ function ProfileMenu({ user }) {
                     break;
                   case 'products':
                     nav('/admin/products');
+                    break;
                   case 'profile':
                     if (user.isAdmin) {
                       nav('/admin/profile');
