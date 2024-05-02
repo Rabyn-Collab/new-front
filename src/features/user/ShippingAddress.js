@@ -7,11 +7,19 @@ import {
 import { useFormik } from "formik";
 
 import * as Yup from 'yup';
+import { useUserUpdateMutation } from "../auth/authApi";
+import { setUser } from "../auth/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 
 const ShippingAddress = () => {
 
-
+  const [userUpdate, { isLoading }] = useUserUpdateMutation();
+  const dispatch = useDispatch();
+  const nav = useNavigate();
+  const { user } = useSelector((state) => state.userSlice);
   const placeSchema = Yup.object({
     address: Yup.string().required(),
     city: Yup.string().required(),
@@ -25,7 +33,27 @@ const ShippingAddress = () => {
     },
 
     onSubmit: async (val, { resetForm }) => {
+      const newAddress = {
+        address: val.address,
+        city: val.city,
+        isEmpty: false
+      };
 
+      try {
+        const response = await userUpdate({
+          body: {
+            shippingAddress: newAddress
+          },
+          token: user.token
+        }).unwrap();
+        dispatch(setUser({ ...user, shippingAddress: newAddress }));
+        toast.dismiss();
+        toast.success(response.message);
+        nav(-1);
+      } catch (err) {
+        toast.dismiss();
+        toast.error(err.data.message);
+      }
     },
     validationSchema: placeSchema
 
@@ -73,7 +101,7 @@ const ShippingAddress = () => {
           {formik.errors.city && formik.touched.city && <h1 className="text-pink-600">{formik.errors.city}</h1>}
         </div>
 
-        <Button type="submit" className="mt-6" fullWidth>
+        <Button loading={isLoading} type="submit" className="mt-6" fullWidth>
           Submit
         </Button>
 

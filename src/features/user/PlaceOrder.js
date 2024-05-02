@@ -1,13 +1,15 @@
 import React from 'react'
 import { Button } from "@material-tailwind/react";
-import { carts } from '../../dummy/carts';
-import { regUser } from '../../dummy/users';
+import { useSelector } from 'react-redux';
+import { baseUrl } from '../../constants/apis';
+
 
 
 const PlaceOrder = () => {
 
 
-
+  const { carts } = useSelector((state) => state.cartSlice);
+  const { user } = useSelector((state) => state.userSlice);
 
   const total = carts.reduce((prev, cart) => prev + cart.price * cart.qty, 0);
 
@@ -22,8 +24,8 @@ const PlaceOrder = () => {
       <div>
         <h1 className="text-2xl font-bold">Delivery Address</h1>
         <div className='flex gap-3 text-gray-700 mb-2'>
-          <h1>Address: {regUser?.shippingAddress?.address}</h1>
-          <h1>City: {regUser?.shippingAddress?.city}</h1>
+          <h1>Address: {user?.shippingAddress?.address}</h1>
+          <h1>City: {user?.shippingAddress?.city}</h1>
         </div>
 
       </div>
@@ -34,7 +36,7 @@ const PlaceOrder = () => {
           {carts.map((cart, i) => {
             return <div key={i} className="grid grid-cols-2">
               <div>
-                <img src={`${cart.image}`} alt="" className='h-[70px]  w-[90px]' />
+                <img src={`${baseUrl}${cart.image}`} alt="" className='h-[70px]  w-[90px]' />
               </div>
               <div>
                 <h1>{cart.name}</h1>

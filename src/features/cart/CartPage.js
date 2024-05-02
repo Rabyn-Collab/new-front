@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router";
 import { removeCart, setToCart } from "./cartSlice";
+import { baseUrl } from "../../constants/apis";
 
 const CartPage = () => {
 
@@ -31,7 +32,7 @@ const CartPage = () => {
           {carts.map((cart, i) => {
             return <div key={i} className="grid grid-cols-5 gap-10 ">
               <div>
-                <img src={`${cart.image}`} alt="" />
+                <img src={`${baseUrl}${cart.image}`} alt="" />
               </div>
               <div>
                 <h1>{cart.name}</h1>

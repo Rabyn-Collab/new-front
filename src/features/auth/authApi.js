@@ -6,7 +6,8 @@ import { baseUrl } from '../../constants/apis';
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${baseUrl}/users`}),
+    baseUrl: `${baseUrl}/users`
+  }),
   endpoints: (builder) => ({
 
     userLogin: builder.mutation({
@@ -23,7 +24,18 @@ export const authApi = createApi({
         body: query,
         method: 'POST'
       })
+    }),
+    userUpdate: builder.mutation({
+      query: (query) => ({
+        url: '/update',
+        body: query.body,
+        headers: {
+          Authorization: query.token
+        },
+        method: 'PATCH'
+      })
     })
+
 
 
 
@@ -33,4 +45,4 @@ export const authApi = createApi({
 });
 
 
-export const { useUserLoginMutation, useUserRegisterMutation } = authApi;
+export const { useUserLoginMutation, useUserRegisterMutation, useUserUpdateMutation } = authApi;
