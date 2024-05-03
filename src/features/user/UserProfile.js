@@ -1,20 +1,23 @@
 import React from 'react'
 import UserOrder from '../order/UserOrder'
 import UserDetailForm from '../shared/UserDetailForm'
-
-import { adminUser } from '../../dummy/users';
-import { orders } from '../../dummy/orders';
+import { useSelector } from 'react-redux';
+import { useOrderByUserQuery } from '../order/orderApi';
 
 const UserProfile = () => {
+
+  const { user } = useSelector((state) => state.userSlice);
+
+  const { isLoading, error, data } = useOrderByUserQuery(user);
 
   return (
     <div className='grid grid-cols-3 p-4 gap-10'>
       <div>
-        <UserDetailForm user={adminUser} />
+        <UserDetailForm user={user} />
       </div>
 
       <div className='col-span-2'>
-        <UserOrder data={orders} />
+        <UserOrder isLoading={isLoading} error={error} data={data} />
       </div>
 
 

@@ -6,13 +6,19 @@ import { products } from '../../dummy/products';
 import { regUser } from '../../dummy/users';
 import { useParams } from 'react-router';
 import { useGetProductByIdQuery } from './productApi';
+import { useSelector } from 'react-redux';
 
 const ProductDetail = () => {
 
 
   const { id } = useParams();
+  const { user } = useSelector((state) => state.userSlice);
 
   const { isLoading, error, isError, data } = useGetProductByIdQuery(id);
+
+  if (isLoading) {
+    return <h1>Loading....</h1>
+  }
 
   return (
     <div>
@@ -27,7 +33,7 @@ const ProductDetail = () => {
 
         <ProductTable product={data.data} />
 
-        {/* {<ProductReview user={regUser} id={data.data._id} reviews={products[0].reviews} />} */}
+        {<ProductReview user={user} id={data.data._id} reviews={data?.data?.reviews} />}
 
       </div>
       }

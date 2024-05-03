@@ -7,16 +7,39 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useFormik } from 'formik';
+import { useUserUpdateMutation } from '../auth/authApi';
+import { toast } from 'react-toastify';
+import { setUser } from '../auth/userSlice';
+import { useDispatch } from 'react-redux';
 
 
 const UserDetailForm = ({ user }) => {
-
+  const dispatch = useDispatch();
+  const [updateUser, { isLoading }] = useUserUpdateMutation();
   const { handleSubmit, handleChange, values } = useFormik({
     initialValues: {
       fullname: user.fullname,
       email: user.email
     },
     onSubmit: async (val) => {
+      try {
+        const response = await updateUser({
+          body: {
+            fullname: val.fullname,
+            email: val.email
+          },
+          token: user.token
+        }).unwrap();
+        dispatch(setUser({
+          ...user, fullname: val.fullname,
+          email: val.email
+        }));
+        toast.dismiss();
+        toast.success(response.message);
+      } catch (err) {
+        toast.dismiss();
+        toast.error(err.data.message);
+      }
     }
   });
 
@@ -56,7 +79,7 @@ const UserDetailForm = ({ user }) => {
 
         </div>
 
-        <Button type='submit' className="mt-6" fullWidth>
+        <Button loading={isLoading} type='submit' className="mt-6" fullWidth>
           Update
         </Button>
 

@@ -3,13 +3,18 @@ import React from 'react'
 import { Button, Card, Typography } from "@material-tailwind/react";
 import { useNavigate } from 'react-router';
 
+
 const TABLE_HEAD = ["ProductId", "Total", "CreatedAt", ''];
 
 
 
-const UserOrder = ({ data }) => {
+const UserOrder = ({ isLoading, error, data }) => {
+
 
   const nav = useNavigate();
+  if (isLoading) {
+    return <h1>Loading....</h1>
+  }
 
   return (
     <div >
@@ -35,7 +40,7 @@ const UserOrder = ({ data }) => {
               </tr>
             </thead>
             <tbody>
-              {data.map(({ totalAmount, createdAt, _id, }, index) => {
+              {data?.orders.map(({ totalAmount, createdAt, _id, }, index) => {
                 const isLast = index === data.length - 1;
                 const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
                 return (
