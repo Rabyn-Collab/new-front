@@ -60,7 +60,7 @@ export const productApi = createApi({
       query: (query) => ({
         url: `/review/${query.id}`,
         body: query.body,
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           Authorization: query.token
         }
