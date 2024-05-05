@@ -11,9 +11,11 @@ import * as Yup from 'yup';
 import { useUserLoginMutation } from "./authApi";
 import { useDispatch } from "react-redux";
 import { setUser } from "./userSlice";
+import { useState } from "react";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
   const nav = useNavigate();
   const [userLogin, { isLoading }] = useUserLoginMutation();
   const userSchema = Yup.object({
@@ -75,7 +77,7 @@ const Login = () => {
             Password
           </Typography>
           <Input
-            type="password"
+            type={show ? 'text' : 'password'}
             name="password"
             onChange={formik.handleChange}
             value={formik.values.password}
