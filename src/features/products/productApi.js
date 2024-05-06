@@ -11,6 +11,7 @@ export const productApi = createApi({
     getTopProducts: builder.query({
       query: (query) => ({
         url: '/topProducts',
+
         method: 'GET'
       }),
       providesTags: ['Product']
@@ -19,6 +20,9 @@ export const productApi = createApi({
     getAllProducts: builder.query({
       query: (query) => ({
         url: '/',
+        params: {
+          search: query
+        },
         method: 'GET'
       }),
       providesTags: ['Product']

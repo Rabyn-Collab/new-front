@@ -17,6 +17,7 @@ import AdminProfile from "./features/admin/AdminProfile";
 import PublicRoutes from "./ui/PublicRoutes";
 import UserRoutes from "./ui/UserRoutes";
 import AdminRoutes from "./ui/AdminRoutes";
+import SearchUi from "./features/search/SearchUi";
 
 
 
@@ -72,6 +73,7 @@ const App = () => {
           path: 'about', element: <About />
         },
         { path: 'product/:id', element: <ProductDetail /> },
+        { path: 'search/:search', element: <SearchUi /> },
         { path: 'order/:id', element: <OrderDetail /> },
       ]
     },

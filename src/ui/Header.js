@@ -8,6 +8,7 @@ import {
   MenuList,
   MenuItem,
   Avatar,
+  Input,
 } from "@material-tailwind/react";
 import {
   UserCircleIcon,
@@ -19,6 +20,7 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../features/auth/userSlice";
+import { useFormik } from "formik";
 
 // admin menu component
 const adminMenuItems = [
@@ -151,6 +153,16 @@ const Header = () => {
   //   );
   // }, []);
   const { user } = useSelector((state) => state.userSlice);
+  const nav = useNavigate();
+  const { handleChange, handleSubmit, values } = useFormik({
+    initialValues: {
+      search: ''
+    },
+    onSubmit: (val, { resetForm }) => {
+      nav(`/search/${val.search.trim()}`);
+      resetForm();
+    }
+  })
 
 
 
@@ -167,11 +179,17 @@ const Header = () => {
         </Typography>
 
         <div className="flex items-center space-x-2">
+          <div className="w-72">
+            <form onSubmit={handleSubmit} >
+              <Input label="Search" name="search" value={values.search} onChange={handleChange} />
+            </form>
+          </div>
           {!user && <NavLink to='/login'>
             <Button size="sm" variant="text">
               <span>Log In</span>
             </Button>
           </NavLink>}
+
 
           {user && !user.isAdmin && <NavLink to='/carts'>
             <Button size="sm" variant="text">

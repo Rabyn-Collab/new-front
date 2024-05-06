@@ -1,5 +1,7 @@
-import { baseUrl } from "../../constants/apis";
-
+import React from 'react'
+import { useNavigate, useParams } from 'react-router'
+import { useGetAllProductsQuery } from '../products/productApi';
+import { baseUrl } from '../../constants/apis';
 import {
   Card,
   CardHeader,
@@ -8,14 +10,12 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import { useNavigate } from 'react-router';
-import { useGetAllProductsQuery } from "./productApi";
-import CardSkeleton from "../../ui/CardSkeleton";
-const ProductShow = () => {
+import CardSkeleton from '../../ui/CardSkeleton';
 
-  const { isLoading, isError, error, data } = useGetAllProductsQuery();
+const SearchUi = () => {
+  const { search } = useParams();
   const nav = useNavigate();
-
+  const { isLoading, isError, error, data } = useGetAllProductsQuery(search);
   if (isLoading) {
     return <CardSkeleton />
   }
@@ -65,4 +65,4 @@ const ProductShow = () => {
     </div>
   )
 }
-export default ProductShow
+export default SearchUi
